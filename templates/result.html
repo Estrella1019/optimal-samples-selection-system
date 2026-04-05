@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ filename }} — Optimal Samples Selection System</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+  <div style="max-width:860px; margin:0 auto;">
+
+    <div class="card">
+      <h1 class="page-title">An Optimal Samples Selection System</h1>
+      <p class="page-sub" style="font-family:'Consolas',monospace;">{{ filename }}</p>
+
+      <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:16px;">
+        <a class="btn btn-gray" href="/db">◀ Back</a>
+        <button class="btn btn-blue" onclick="window.print()">🖨 Print</button>
+        <form method="POST" action="/delete/{{ filename }}" style="display:inline;"
+              onsubmit="return confirm('Delete this file?')">
+          <button class="btn btn-red" type="submit">🗑 Delete</button>
+        </form>
+      </div>
+
+      <div class="result-content">{{ content }}</div>
+    </div>
+
+  </div>
+</body>
+</html>

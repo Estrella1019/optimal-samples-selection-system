@@ -1,0 +1,33 @@
+# Python
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# macOS
+.DS_Store
+
+# C# build artifacts
+frontend_csharp/bin/
+frontend_csharp/obj/
+frontend_csharp/frontend_csharp/bin/
+frontend_csharp/frontend_csharp/obj/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+.vs/
+
+# Result files (DB)
+results/*.txt
+backend_python/results/*.txt
+backend_python/results.txt
+results.txt
+params.txt
+backend_python/params.txt
+frontend_csharp/params.txt
+
+# IDE
+.vscode/
+.specstory/

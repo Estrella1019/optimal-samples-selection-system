@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Database — Optimal Samples Selection System</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+  <div style="max-width:860px; margin:0 auto;">
+
+    <div class="card">
+      <h1 class="page-title">An Optimal Samples Selection System</h1>
+      <p class="page-sub">S2 — Data Base Resources</p>
+
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:10px;">
+        <span style="color:var(--gray); font-size:.88rem;">
+          {{ entries|length }} saved result(s)
+        </span>
+        <a class="btn btn-gray" href="/">◀ Back to Main</a>
+      </div>
+
+      {% if entries %}
+      <ul class="db-list">
+        {% for e in entries %}
+        <li>
+          <span class="db-label">{{ e.label }}</span>
+          <div style="display:flex; gap:8px;">
+            <a class="btn btn-blue" href="/result/{{ e.filename }}">Display</a>
+            <form method="POST" action="/delete/{{ e.filename }}"
+                  onsubmit="return confirm('Delete {{ e.filename }}?')">
+              <button class="btn btn-red" type="submit">Delete</button>
+            </form>
+          </div>
+        </li>
+        {% endfor %}
+      </ul>
+      {% else %}
+      <div style="text-align:center; padding:48px 0; color:var(--gray);">
+        <div style="font-size:3rem; margin-bottom:12px;">📂</div>
+        <p>No saved results yet.</p>
+        <p style="font-size:.88rem; margin-top:6px;">
+          Run the algorithm on the main screen and press <strong>Store to DB</strong>.
+        </p>
+        <a class="btn btn-blue" href="/" style="margin-top:18px; display:inline-flex;">
+          ▶ Go to Main Screen
+        </a>
+      </div>
+      {% endif %}
+    </div>
+
+  </div>
+</body>
+</html>
