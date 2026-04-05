@@ -55,29 +55,31 @@ def _validate(m, n, k, j, s):
 
 
 def _run_algorithm(m, n, k, j, s, min_coverage, manual_input):
-    selected = select_n_samples(m, n, manual_input if manual_input else None)
-    groups   = find_minimal_valid_k_groups(
-                   selected, k, j, s,
-                   min_coverage=min_coverage,
-                   restarts=10
-               )
+    selected        = select_n_samples(m, n, manual_input if manual_input else None)
+    groups, method  = find_minimal_valid_k_groups(
+                          selected, k, j, s,
+                          min_coverage=min_coverage,
+                          restarts=10
+                      )
     verified = satisfies_constraints(groups, selected, j, s)
-    return selected, groups, verified
+    return selected, groups, verified, method
 
 
-def _save_result(m, n, k, j, s, min_coverage, selected, groups, verified):
+def _save_result(m, n, k, j, s, min_coverage, selected, groups, verified, method="greedy"):
     run_id = _next_run_id(m, n, k, j, s)
     count  = len(groups)
     fname  = f"{m}-{n}-{k}-{j}-{s}-{run_id}-{count}.txt"
     fpath  = os.path.join(RESULTS_DIR, fname)
 
+    method_label = "Exact (Optimal)" if method == "exact" else "Greedy (Near-Optimal)"
     lines = [
         "=" * 52,
         "   Optimal Samples Selection System — Result",
         "=" * 52,
-        f"Parameters : m={m}, n={n}, k={k}, j={j}, s={s}",
+        f"Parameters  : m={m}, n={n}, k={k}, j={j}, s={s}",
         f"Min Coverage: {min_coverage}",
         f"Run ID      : {run_id}",
+        f"Algorithm   : {method_label}",
         f"Coverage OK : {'YES' if verified else 'NO'}",
         "",
         f"Selected Samples ({n} from {m}):",
@@ -135,7 +137,7 @@ def run():
         return jsonify({"error": "\n".join(errors)}), 400
 
     try:
-        selected, groups, verified = _run_algorithm(m, n, k, j, s, cov, manual)
+        selected, groups, verified, method = _run_algorithm(m, n, k, j, s, cov, manual)
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
@@ -145,6 +147,7 @@ def run():
         "groups":   groups_list,
         "count":    len(groups_list),
         "verified": verified,
+        "method":   method,
         "params":   {"m": m, "n": n, "k": k, "j": j, "s": s, "min_coverage": cov}
     })
 
@@ -163,12 +166,13 @@ def store():
         selected = data["selected"]
         groups   = [tuple(g) for g in data["groups"]]
         verified = data.get("verified", True)
+        method   = data.get("method", "greedy")
     except (KeyError, ValueError) as e:
         return jsonify({"error": f"Bad data: {e}"}), 400
 
     try:
         fname, run_id, count = _save_result(
-            m, n, k, j, s, cov, selected, groups, verified
+            m, n, k, j, s, cov, selected, groups, verified, method
         )
     except Exception as e:
         return jsonify({"error": str(e)}), 500

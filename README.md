@@ -3,7 +3,7 @@
 > CS360 — Artificial Intelligence Group Project
 
 A web-based **Optimal Samples Selection System** built with Python + Flask.
-Runs entirely in the browser — including on **mobile phones** (bonus feature).
+Runs entirely in the browser — including on **mobile phones** (bonus feature ✓).
 
 ---
 
@@ -90,7 +90,7 @@ To run on a **phone**:
 ├── static/css/style.css        # Responsive stylesheet
 ├── backend_python/
 │   └── core/
-│       ├── optimizer.py        # Core algorithm
+│       ├── optimizer.py        # Core algorithm (dual-mode)
 │       ├── sample_selector.py  # Sample selection
 │       └── constraints.py      # Coverage verification
 └── results/                    # Auto-created, stores DB files
@@ -100,34 +100,52 @@ To run on a **phone**:
 
 ## Algorithm
 
-Greedy covering with **random restarts**:
+The system uses a **dual-mode strategy** that automatically selects the best algorithm based on problem size:
 
-- Generate all k-subsets from the n selected samples
-- Each round: pick the k-subset covering the most uncovered j-subsets (≥ s overlap)
+### Mode 1 — Exact Backtracking + Branch & Bound
+> Used when C(n, k) ≤ 200 (small search space)
+
+- Generates all C(n,k) candidate k-groups and all C(n,j) j-subsets
+- **Deduplicates** k-groups with identical coverage fingerprints to shrink the search space
+- Sorts candidates by coverage power (most effective first)
+- Uses greedy solution as an **upper-bound initialiser** for pruning
+- Applies a **lower-bound pruning**: if remaining candidates cannot possibly improve the best solution, the branch is cut
+- **Guarantees the provably minimum number of groups**
+
+### Mode 2 — Greedy + Random Restarts
+> Used when C(n, k) > 200 (large search space)
+
+- Each round: pick the k-group covering the most uncovered j-subsets (≥ s overlap)
 - **Frequency-based tiebreaking**: prefer elements appearing most in uncovered subsets
 - Repeat 10× with shuffled candidates, keep the **smallest result**
+- Produces near-optimal results in a fraction of the time
+
+The UI clearly labels which algorithm was used: **✓ Exact · Provably Optimal** or **≈ Greedy · Near-Optimal**.
 
 ### Sample Results
 
-| m | n | k | j | s | Groups |
-|---|---|---|---|---|--------|
-| 45 | 7 | 6 | 5 | 5 | 6 ✓ |
-| 45 | 8 | 6 | 5 | 5 | 12 ✓ |
-| 45 | 8 | 6 | 4 | 4 | 7 ✓ |
-| 45 | 9 | 6 | 4 | 4 | 12 ✓ |
-| 45 | 8 | 6 | 6 | 5 | 4 ✓ |
-| 45 | 9 | 6 | 5 | 4 | 3 ✓ |
+| m | n | k | j | s | Groups | Algorithm |
+|---|---|---|---|---|--------|-----------|
+| 45 | 7 | 6 | 5 | 5 | 6 ✓ | Exact |
+| 45 | 8 | 6 | 5 | 5 | 12 ✓ | Exact |
+| 45 | 8 | 6 | 4 | 4 | 7 ✓ | Exact |
+| 45 | 9 | 6 | 4 | 4 | 12 ✓ | Exact |
+| 45 | 8 | 6 | 6 | 5 | 4 ✓ | Exact |
+| 45 | 9 | 6 | 5 | 4 | 3 ✓ | Exact |
+| 45 | 12 | 6 | 6 | 4 | 6 ✓ | Greedy |
 
 ---
 
 ## Features
 
-- S1 Main Screen: parameter input, random/manual selection, execute, store, clear, print
-- S2 Database Screen: list saved runs, display, delete
+- **S1 Main Screen**: parameter input, random/manual selection, execute, store, clear, print
+- **S2 Database Screen**: list saved runs, display, delete
+- **Dual-mode algorithm**: exact backtracking (small scale) + greedy restarts (large scale)
+- **Algorithm badge**: UI shows whether result is "Provably Optimal" or "Near-Optimal"
 - Full input validation with clear error messages
 - Automatic coverage verification on every result
-- Mobile-responsive UI
-- 8 built-in quick-example presets from the assignment
+- Mobile-responsive UI — works on phones and tablets
+- 8 built-in quick-example presets matching the assignment examples
 
 ---
 

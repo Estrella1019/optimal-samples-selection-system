@@ -109,11 +109,15 @@
     <!-- Results card -->
     <div class="card" id="resultCard" style="display:none;">
       <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
-        <h2 style="font-size:1.1rem; font-weight:700; color:var(--blue-dk);">
+        <h2 style="font-size:1.1rem; font-weight:700; color:var(--blue-dk); display:flex; align-items:center; gap:8px;">
           Results
           <span id="countBadge" style="
             background:#dbeafe; color:var(--blue-dk);
-            font-size:.82rem; padding:2px 10px; border-radius:99px; margin-left:8px;
+            font-size:.82rem; padding:2px 10px; border-radius:99px;
+          "></span>
+          <span id="methodBadge" style="
+            font-size:.78rem; padding:3px 10px; border-radius:99px;
+            font-weight:700; display:none;
           "></span>
         </h2>
         <button class="btn btn-gray" onclick="window.print()" style="padding:6px 14px; font-size:.82rem;">
@@ -253,13 +257,31 @@
     banner.textContent =
       `Selected ${data.params.n} samples from ${data.params.m}: ${data.selected.join(", ")}`;
 
-    // Badge
+    // Count badge
     document.getElementById("countBadge").textContent =
       `${data.count} groups found`;
 
+    // Method badge — highlight exact vs greedy
+    const mb = document.getElementById("methodBadge");
+    mb.style.display = "inline-block";
+    if (data.method === "exact") {
+      mb.textContent   = "✓ Exact · Provably Optimal";
+      mb.style.background = "#dcfce7";
+      mb.style.color      = "#15803d";
+    } else {
+      mb.textContent   = "≈ Greedy · Near-Optimal";
+      mb.style.background = "#fef9c3";
+      mb.style.color      = "#854d0e";
+    }
+
     // Result text
+    const algo = data.method === "exact"
+      ? "Algorithm : Exact Backtracking + Branch & Bound (Provably Optimal)"
+      : "Algorithm : Greedy + Random Restarts (Near-Optimal)";
+
     let txt = `Parameters: m=${data.params.m}, n=${data.params.n}, k=${data.params.k}, `
             + `j=${data.params.j}, s=${data.params.s}, min_coverage=${data.params.min_coverage}\n`
+            + `${algo}\n`
             + `Coverage verified: ${data.verified ? "YES ✓" : "NO ✗"}\n`
             + `\nValid k-groups (${data.count} total):\n`;
     data.groups.forEach((g, i) =>
