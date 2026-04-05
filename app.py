@@ -233,4 +233,4 @@ if __name__ == "__main__":
     print("  http://localhost:5000")
     print("  Mobile: use your LAN IP:5000")
     print("=" * 52)
-    app.run(host="0.0.0.0", port=5000, debug=False)
+    app.run(host="0.0.0.0", port=8080, debug=False)

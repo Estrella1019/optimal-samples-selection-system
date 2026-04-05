@@ -18,10 +18,10 @@ pip install flask -q
 echo ""
 echo "================================================"
 echo "  Optimal Samples Selection System"
-echo "  Local:  http://localhost:5000"
+echo "  Local:  http://localhost:8080"
 LAN_IP=$(ipconfig getifaddr en0 2>/dev/null || ipconfig getifaddr en1 2>/dev/null)
 if [ -n "$LAN_IP" ]; then
-  echo "  Mobile: http://$LAN_IP:5000"
+  echo "  Mobile: http://$LAN_IP:8080"
 fi
 echo "  (Open the above URL in your browser)"
 echo "  Press Ctrl+C to stop"
