@@ -1,6 +1,6 @@
 # Optimal Samples Selection System
 
-> CS360 / SE360 — Artificial Intelligence Group Project
+> CS360 — Artificial Intelligence Group Project
 
 A web-based **Optimal Samples Selection System** built with Python + Flask.
 Runs entirely in the browser — including on **mobile phones** (bonus feature).
@@ -135,9 +135,9 @@ Greedy covering with **random restarts**:
 
 | Name | Student ID |
 |------|------------|
-| (member 1) | |
-| (member 2) | |
-| (member 3) | |
-| (member 4) | |
+| PAN JIAYING  |1230028040 |
+| JIN XINYI    |1230026823 |
+| LIU XINGZHE  |1230033168 |
+| CHENG YUXIANG|1230020512 |
 
-CS360 / SE360 — Artificial Intelligence
+CS360  — Artificial Intelligence
