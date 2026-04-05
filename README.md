@@ -83,17 +83,18 @@ To run on a **phone**:
 ├── app.py                      # Flask app — all routes
 ├── start.sh                    # One-click launcher (macOS/Linux)
 ├── requirements.txt            # Dependencies (flask only)
+├── README.md                   # This file
 ├── templates/
 │   ├── index.html              # S1: Main screen
 │   ├── db.html                 # S2: Database browser
 │   └── result.html             # Result detail viewer
 ├── static/css/style.css        # Responsive stylesheet
-├── backend_python/
-│   └── core/
-│       ├── optimizer.py        # Core algorithm (dual-mode)
-│       ├── sample_selector.py  # Sample selection
-│       └── constraints.py      # Coverage verification
-└── results/                    # Auto-created, stores DB files
+├── backend_python/core/
+│   ├── optimizer.py            # Dual-mode algorithm (exact + greedy)
+│   ├── sample_selector.py      # Random / manual sample selection
+│   ├── constraints.py          # Coverage verification
+│   └── __init__.py
+└── results/                    # Auto-created at runtime, stores DB files
 ```
 
 ---
